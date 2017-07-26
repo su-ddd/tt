@@ -15,7 +15,12 @@ function tt_stanford_r25_contact_alter(&$data) {
 }
 
 function tt_stanford_r25_pta_validate($form, &$form_state) {
-if (!(preg_match('/^(\d{7})\-(\d.*)\-([A-Z]{5})$/', $form_state['values']['stanford_r25_booking_attr144']))) {
-      form_set_error('stanford_r25_booking_attr144', t('Invalid PTA Format'));
+  if (preg_match('/;/', $form_state['values']['stanford_r25_booking_reason'])) {
+      form_set_error('stanford_r25_booking_reason', t('Please do not include the ; character in the title of the event.'));
+  }
+
+  $form_state['values']['stanford_r25_booking_attr144'] = trim($form_state['values']['stanford_r25_booking_attr144']);
+  if (!(preg_match('/^(\d{7})\-(\d.*)\-([A-Z]{5})$/', $form_state['values']['stanford_r25_booking_attr144']))) {
+      form_set_error('stanford_r25_booking_attr144', t('Invalid PTA Format. The correct format is Project-Task-Award (e.g. 1234567-123-ABCDE)'));
   }
 }
