@@ -12,6 +12,7 @@ function tt_form_stanford_r25_reservation_alter(&$form, &$form_state, $form_id) 
 // Remove the Headcount: 2 (which is hard-coded) from the tool tip
 function tt_stanford_r25_contact_alter(&$data) {
   $data = str_replace('<br />Headcount: 2', '', $data);
+  $data = str_replace('<br />Headcount:', '', $data);
 }
 
 function tt_stanford_r25_pta_validate($form, &$form_state) {
