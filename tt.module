@@ -5,7 +5,7 @@ function tt_form_stanford_r25_reservation_alter(&$form, &$form_state, $form_id) 
   $form['stanford_r25_booking_headcount']['#type'] = 'hidden';
   $form['stanford_r25_booking_headcount']['#value'] = 1;
   $form['submit']['#prefix'] = '<span>By clicking the Reserve button, I confirm that I have read and agree to the <a href="https://uit.stanford.edu/service/techtraining/facilityrentalpolicy">Facility Rental Policy</a></span><br />';
-  $form['stanford_r25_booking_attr144']['#suffix'] = '<div class="form-item"><span class="description">E.g., 1234567-123-ABCDE (Project-Task-Award)</span></div>';
+  $form['stanford_r25_booking_attr144']['#suffix'] = '<div class="form-item"><span class="description">E.g., 1234567-123-ABCDE (Case sensitive)</span></div>';
    array_unshift($form['#validate'], 'tt_stanford_r25_pta_validate');
 }
 
