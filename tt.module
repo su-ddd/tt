@@ -51,9 +51,17 @@ function tt_stanford_r25_reservation_submit($form, &$form_state) {
     $date = DateTime::createFromFormat(DATE_W3C, $form_state['storage']['stanford_r25_postprocess']['dates']['start']);
     $res_usermail = $user->mail;
     $res_username = $user->name;
-    $subject = 'Room Reservation';
-    $body[] = 'View or cancel the reservation at: ' . $base_url . '/r25/' . $form_state['storage']['stanford_r25_postprocess']['room']['machine_name'] . '/calendar';
-    $body[] = "Room: " . $form_state['storage']['stanford_r25_postprocess']['room']['display_name'];
+    $subject = 'Rental Receipt - ' . $form_state['storage']['stanford_r25_postprocess']['room']['display_name'] . ' - ' . $form_state['values']['stanford_r25_booking_reason'];
+    $body[] = 'Hi ' . $res_username . ',';
+    $body[] = 'Thank you for your reservation of ' . $form_state['storage']['stanford_r25_postprocess']['room']['display_name'] . ' on ' . $date->format("l, F j, Y g:i a") . '.';
+    $body[] = 'If this is your first time renting a Technology Training facility, we will be in touch to schedule a mandatory orientation of the room. The goal of the orientation is to provide you with essential information (such as the door code) to ensure your event is a success.';
+    $body[] = 'You can view or cancel your reservation at: ' . $base_url . '/r25/' . $form_state['storage']['stanford_r25_postprocess']['room']['machine_name'] . '/calendar';
+    $body[] = 'Please read our facility rental policy at: https://uit.stanford.edu/service/facilityrentals/policy';
+    $body[] = 'For any questions, please contact us at tt-questions@lists.stanford.edu.';
+    $body[] = 'Thank you,';
+    $body[] = 'University IT Technology Training<br>http://techtraining.stanford.edu';
+    
+    /*$body[] = "Room: " . $form_state['storage']['stanford_r25_postprocess']['room']['display_name'];
     $body[] = "Date: " . $date->format("l, F j, Y g:i a");
     $duration = (intval($form_state['values']['stanford_r25_booking_duration']) * 30) + 30;
       if ($duration > 120) {
@@ -68,11 +76,11 @@ function tt_stanford_r25_reservation_submit($form, &$form_state) {
       $body[] = "Estimated Fee: $" . $form_state['storage']['stanford_r25_postprocess']['est_charge'];
     }
     dpm($body);
-
+*/
     $params = array(
       'body' => $body,
       'subject' => $subject
-    );    
+    ); 
     drupal_mail('stanford_r25', 'receipt', $res_usermail, language_default(), $params, variable_get('stanford_r25_from_email', variable_get('site_mail')));
   }
   
