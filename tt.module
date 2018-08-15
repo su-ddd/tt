@@ -43,7 +43,6 @@ function tt_mail_alter(&$message) {
 function tt_stanford_r25_reservation_submit($form, &$form_state) {
   
   if (!empty($form_state['storage']['stanford_r25_postprocess']['room'])) {
-    //dpm($form_state['storage']);
     global $base_url;
     global $user;
     $startdate = DateTime::createFromFormat(DATE_W3C, $form_state['storage']['stanford_r25_postprocess']['dates']['start']);
@@ -67,7 +66,6 @@ function tt_stanford_r25_reservation_submit($form, &$form_state) {
       'body' => $body,
       'subject' => $subject
     );
-    //dpm($params);
     drupal_mail('stanford_r25', 'receipt', $res_usermail, language_default(), $params, variable_get('stanford_r25_from_email', variable_get('site_mail')));
   }
 }
