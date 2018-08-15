@@ -35,6 +35,7 @@ function tt_mail_alter(&$message) {
     unset($message['headers']['Sender']);
     unset($message['headers']['Errors-To']);
     unset($message['headers']['Return-Path']);
+    $message['headers']['Reply-To'] = 'tt-questions@lists.stanford.edu';
   }
 }
 
@@ -42,26 +43,31 @@ function tt_mail_alter(&$message) {
 function tt_stanford_r25_reservation_submit($form, &$form_state) {
   
   if (!empty($form_state['storage']['stanford_r25_postprocess']['room'])) {
-   
+    //dpm($form_state['storage']);
     global $base_url;
     global $user;
-    $date = DateTime::createFromFormat(DATE_W3C, $form_state['storage']['stanford_r25_postprocess']['dates']['start']);
+    $startdate = DateTime::createFromFormat(DATE_W3C, $form_state['storage']['stanford_r25_postprocess']['dates']['start']);
+    $enddate = DateTime::createFromFormat(DATE_W3C, $form_state['storage']['stanford_r25_postprocess']['dates']['end']);
     $res_usermail = $user->mail;
     $res_username = $user->name;
     $subject = 'Rental Receipt - ' . $form_state['storage']['stanford_r25_postprocess']['room']['display_name'] . ' - ' . $form_state['values']['stanford_r25_booking_reason'];
     $body[] = 'Hi ' . $res_username . ',';
-    $body[] = 'Thank you for your reservation of ' . $form_state['storage']['stanford_r25_postprocess']['room']['display_name'] . ' on ' . $date->format("l, F j, Y g:i a") . '.';
-    $body[] = 'If this is your first time renting a Technology Training facility, we will be in touch to schedule a mandatory orientation of the room. The goal of the orientation is to provide you with essential information (such as the door code) to ensure your event is a success.';
+    $body[] = 'Thank you for your reservation of ' . $form_state['storage']['stanford_r25_postprocess']['room']['display_name'] . ' on ' . $startdate->format("l, F j, Y") . ' from ' . $startdate->format("g:i a") . ' to ' . $enddate->format("g:i a") . '.';
     $body[] = 'You can view or cancel your reservation at: ' . $base_url . '/r25/' . $form_state['storage']['stanford_r25_postprocess']['room']['machine_name'] . '/calendar';
+    $body[] = 'If this is your first time renting a Technology Training facility, please call (650) 723-4391 or email tt-questions@lists.stanford.edu to schedule a required orientation of the room.';
+    $body[] = 'The goal of this orientation is to provide you with:';
+    $body[] = '<ol><li>the access code for the entry door</li><li>instructions for operating audio-visual equipment in the room</li><li>trouble shooting resources.</li></ol>';
+    $body[] = 'We look forward to working together with you to ensure that your event is successful.';
     $body[] = 'Please read our facility rental policy at: https://uit.stanford.edu/service/facilityrentals/policy';
-    $body[] = 'For any questions, please contact us at tt-questions@lists.stanford.edu.';
+    $body[] = 'For any questions, <a href="https://stanford.service-now.com/services?id=get_help&cmdb_ci=5e560e9613e3e240d08ebda12244b01e">please submit a Help ticket</a>.';
     $body[] = 'Thank you,';
     $body[] = 'University IT Technology Training<br>http://techtraining.stanford.edu';
    
     $params = array(
       'body' => $body,
       'subject' => $subject
-    ); 
+    );
+    //dpm($params);
     drupal_mail('stanford_r25', 'receipt', $res_usermail, language_default(), $params, variable_get('stanford_r25_from_email', variable_get('site_mail')));
   }
 }
