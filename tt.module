@@ -58,7 +58,7 @@ function tt_stanford_r25_reservation_submit($form, &$form_state) {
     $body[] = '<ol><li>the access code for the entry door</li><li>instructions for operating audio-visual equipment in the room</li><li>trouble shooting resources.</li></ol>';
     $body[] = 'We look forward to working together with you to ensure that your event is successful.';
     $body[] = 'Please read our facility rental policy at: https://uit.stanford.edu/service/facilityrentals/policy';
-    $body[] = 'For any questions, <a href="https://stanford.service-now.com/services?id=get_help&cmdb_ci=5e560e9613e3e240d08ebda12244b01e">please submit a Help ticket</a>.';
+    $body[] = 'For any questions, please submit a Help ticket: https://stanford.service-now.com/services?id=get_help&cmdb_ci=5e560e9613e3e240d08ebda12244b01e';
     $body[] = 'Thank you,';
     $body[] = 'University IT Technology Training<br>http://techtraining.stanford.edu';
    
